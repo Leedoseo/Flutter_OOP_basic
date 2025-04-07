@@ -45,7 +45,7 @@ void main() {
 - 변수 타입을 `Idol`로 지정하여 `Idol`의 인스턴스를 생성
 - 인스턴스를 생성할 때는 함수를 실행하는 것처럼 클래스명 뒤에 `()`를 붙여줌.
 
-## ✅ 2. 생성자
+## ✅ 1-2. 생성자
 생성자는 클래스의 인스턴스를 생성하는 메서드임. 생성자를 사용해서 `name` 변수의 값을 외부에서 입력할 수 있도록 변경할 수 있음!
 
 ```dart
@@ -88,7 +88,7 @@ void main() {
 ```
 - `name`이 `블랙핑크`인 인스턴스와 `name`이 `BTS`인 인스턴스를 생성했음.
 
-## ✅ 3. 네임드 생성자
+## ✅ 1-3. 네임드 생성자
 네임드 생성자는 클래스를 생성하는 여러 방법을 명시하고 싶을 때 사용함.
 
 ```dart
@@ -139,7 +139,7 @@ void main() {
 */
 ```
 
-## ✅ 4. 프라이빗 변수
+## ✅ 1-4. 프라이빗 변수
 Dart에서 변수나 메서드 앞에 `_`를 붙이면 해당 멤버는 `private`으로 취급받음
 
 ```dart
@@ -149,7 +149,7 @@ class Idol {
 ```
 - `_name`은 외부 파일(.dart)에서 접근할 수 없는 private 변수임.
 
-## ✅ 5. 게터와 세터
+## ✅ 1-5. 게터와 세터
 위 프라이빗 변수를 외부파일에서 간접적으로 접근하게 해줄 수 있는게 게터와 세터인데, 세터는 요즘 거의 사용하지않고 게터는 종종 사용됨
 
 ```dart
@@ -184,3 +184,124 @@ void main() {
 에이핑크
 */
 ```
+---
+
+## ✅ 2. 상속
+상속은 어떤 클래스의 기능을 다른 클래스가 사용할 수 있게 해주는 기법! `extends`키워드를 통해 상속가능!
+- 기능을 물려주는 클래스 : 부모 클래스
+- 기능을 물려받는 클래스 : 자식 클래스
+- 부모 -> 자식
+
+```dart
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// 자식 클래스
+class BoyGroup extends Idol { // extends 키워드를 사용해서 상속받음. class (자식클래스) extends Idol(부모클래스)
+  BoyGroup(
+  String name,
+  int membersCount,
+  ) : super( // supers는 부모 클래스를 지칭함.
+  name,
+  membersCount,
+  );
+  
+  void sayMale() { // 상속받지 않는 메서드나 변수를 새로 추가할 수 있음. 
+    print("저는 남자 아이돌입니다.");
+  }
+}
+
+// 두 번째 자식 클래스
+class GirlGroup extends Idol {
+  GirlGroup(
+  String name,
+  int membersCount,
+  ) : super(
+  name,
+  membersCount,
+  );
+  
+  void sayFeMale() {
+    print("저는 여자 아이돌입니다.");
+  }
+}
+
+void main() {
+  BoyGroup bts = BoyGroup("BTS", 7);
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  bts.sayName();         // 부모한테 물려받은 메서드
+  bts.sayMembersCount(); // 부모한테 물려받은 메서드
+  bts.sayMale();         // 자식이 새로 추가한 메서드
+  blackPink.sayName();
+  blackPink.sayMembersCount();
+  blackPink.sayFeMale();
+  blackPink.sayMale(); // < 이건 오류! blackPink는 BoyGroup에서 선언한 메서드는 사용 불가!
+}
+```
+
+---
+
+## ✅ 3. 오버라이드
+오버라이드는 부모 클래스 또는 인터페이스에서 정의된 메서드를 재정의할 때 사용됨!
+Dart에서는 `override`키워드를 생략할 수 있기 떄문에 키워드를 사용하지 않고도 메서드를 재정의할 수 있음!
+
+```dart
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// 오버라이드
+class GirlGroup extends Idol {
+  // 상속에서처럼 super키워드를 사용해도 되고, 아래처럼 생성자의 매개변수로 직접 super키워드를 사용해도 됨.
+  GirlGroup (
+  super.name,
+  super.membersCount,
+  );
+  
+  // override키워드를 사용해 오버라이드
+  @override
+  void sayName() {
+    print("저는 여자 아이돌 ${this.name}입니다.");
+  }
+}
+
+void main() {
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  blackPink.sayName(); // 자식 클래스의 오버라이드된 메서드 사용
+  
+  // sayMembersCount는 오버라이드 하지 않았기 때문에 Idol클래스의 메서드가 실행됨
+  blackPink.sayMembersCount();
+}
+```
+- 단! 직접 `override`키워드를 명시하는게 협업 및 유지보수에 유리함!
+- 한 클래스에 이름이 같은 메서드가 존재 불가능! -> 부모 클래스나 인터페이스에 이미 존재하는 메서드명이 입력되면 `override`키워드를 생략해도 메서드가 덮어씌워짐! 주의!!
+
+---
+
