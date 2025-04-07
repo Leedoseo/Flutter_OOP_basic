@@ -214,7 +214,7 @@ class BoyGroup extends Idol { // extends 키워드를 사용해서 상속받음.
   BoyGroup(
   String name,
   int membersCount,
-  ) : super( // supers는 부모 클래스를 지칭함.
+  ) : super( // super는 부모 클래스를 지칭함.
   name,
   membersCount,
   );
