@@ -238,7 +238,10 @@ class GirlGroup extends Idol {
     print("저는 여자 아이돌입니다.");
   }
 }
+```
 
+### 상속 사용 예시
+```dart
 void main() {
   BoyGroup bts = BoyGroup("BTS", 7);
   GirlGroup blackPink = GirlGroup("블랙핑크", 4);
@@ -252,7 +255,6 @@ void main() {
   blackPink.sayMale(); // < 이건 오류! blackPink는 BoyGroup에서 선언한 메서드는 사용 불가!
 }
 ```
-
 ---
 
 ## ✅ 3. 오버라이드
@@ -290,7 +292,9 @@ class GirlGroup extends Idol {
     print("저는 여자 아이돌 ${this.name}입니다.");
   }
 }
-
+```
+### 상속 사용 예시
+```dart
 void main() {
   GirlGroup blackPink = GirlGroup("블랙핑크", 4);
   
@@ -346,7 +350,10 @@ class GirlGroup implements Idol {
     print("${this.name} 멤버는 ${this.membersCount}명 입니다.");
   }
 }
+```
+### 인테퍼이스 사용 예시
 
+```dart
 // 인터페이스 사용법
 void main() {
   GirlGroup blackPink = GirlGroup("블랙핑크", 4);
@@ -404,7 +411,11 @@ class BoyGroup extends Idol with IdolSingMixin { // extends Idol -> 부모 클�
     print("저는 남자 아이돌입니다.");
   }
 }
+```
 
+### 믹스인 사용 예시
+
+```dart
 void main() {
   BoyGroup bts = BoyGroup("BTS", 7);
   
