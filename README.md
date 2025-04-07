@@ -432,3 +432,150 @@ void main() {
 
 ---
 
+## ✅ 6. 추상
+추상은 상속이나 인터페이스로 사용하는데 필요한 속성만 정의하고 인스턴스화 할 수 없도록 하는 기능
+
+```dart
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// implements 키워드를 사용하면 원하는 클래스를 인터페이스로 사용 가능!
+class GirlGroup implements Idol {
+  final String name;
+  final int membersCount;
+  
+  GirlGroup(
+  this.name,
+  this.membersCount,
+  );
+  
+  void sayName() {
+    print("저는 여자 아이돌 ${this.membersCount}명입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name} 멤버는 ${this.membersCount}명 입니다.");
+  }
+}
+
+// 인터페이스 사용법
+void main() {
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  blackPink.sayName();
+  blackPink.sayMembersCount();
+}
+```
+위 코드는 인터페이스 예제임. `Idol`클래스를 인터페이스로 사용하고 `Idol`클래스를 따로 인스턴스화할 일이 없다면, 
+`Idol`클래스를 추상 클래스로 선언해서 `Idol`클래스의 인스턴스화를 방지하고 메서드 정의를 자식 클래스에 위임할 수 있음.
+
+추가로 추상 클래스는 추상 메서드를 선언할 수 있으며 추상 메서드는 함수의 반환 타입, 이름, 파라미터만 정의하고 함수 바디의 선언을 자식클래스에서 필수로 정의하도록 강제함!
+
+```dart
+// 추상
+
+// abstract 키워드를 사용해 추상 클래스 지정
+abstract class Idol {
+  final String name;
+  final int membersCount;
+  
+  // 생성자 선언
+  Idol(this.name, this.membersCount);
+  
+  // 추상 메서드 선언
+  void sayName();
+  void sayMembersCount();
+}
+```
+- `abstract`키워드로 추상 클래스 지정
+- 생성자 선언, 추상 메서드 선언하고 어떻게 동작하는 지가 없음 -> 추상 클래스는 위에서 선언까지만 해주면 됨!
+
+  ### 추상 클래스 구현 방법
+
+  ```dart
+  // implements 키워드를 사용해 추상 클래스를 구현하는 클래스
+  class GirlGroup implements Idol {
+  final String name;
+  final int membersCount;
+  
+  GirlGroup (
+  this.name,
+  this.membersCount,
+  );
+  
+  void sayName() {
+    print("저는 여자 아이돌 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name} 멤버는 ${this.membersCountm}명입니다.");
+    }
+  }
+  ```
+  이렇게 작성하면 생성자를 비롯해 모든 메서드를 정의했음. 하나라도 정의하지 않으면 에러 발생!!
+
+### 추상 클래스 사용 방법
+
+```dart
+void main() {
+GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+blackPink.sayName();
+blackPink.sayMembersCount();
+}
+```
+=> 추상 메서드는 부모 클래스를 인스턴스화할 일이 없음. 자식 클래스들에 필수적 또는 공통적으로 정의되어야 하는 메서드가 존재할 때 사용됨.
+
+---
+
+## ✅ 7. 제네릭
+- 제네릭은 클래스나 함수의 정의를 선언할 떄가 아니라 인스턴스화하거나 실행할 때로 미룸
+- 특정 변수 타입을 하나의 타입으로 제한하고 싶지 않을 때 자주 사용.
+- ex) 정수를 받는 함수, 문자열을 받는 함수를 각각 `setInt()`, `setString()`처럼 따로 만들지 않고 제네릭을 사용해 `set()`함수 하나로 여러 자료형을 입력받게 할 수 있음.
+- 이전에 공부한 것으로는 `Map`, `List`, `Set`등에서 사용한 <> 사이에 입력되는 값이 제네릭 문자임
+
+```dart
+// 제네릭
+
+// 인스턴스화할 때 입력받을 타입을 T로 지정함
+class Cache<T> {
+  // data의 타입을 추후 입력될 T 타입으로 지정함
+  final T data;
+  
+  Cache({
+    required this.data,
+  });
+}
+
+void main() {
+  // T의 타입을 List<int>로 입력
+  final cache = Cache<List<int>> (
+  data : [1, 2, 3],
+  );
+  
+  // 제네릭에 입력된 값을 통해 data변수의 타입이 자동으로 유추함.
+  print(cache.data.reduce((value, element) => value + element));
+}
+```
+
+| 문자 | 설명                                         | 예시              |
+|------|--------------------------------------------|-------------------|
+| T    | 변수 타입을 표현할 때 흔히 사용             | `T value;`        |
+| E    | 리스트 내부 요소들의 타입을 표현할 때 사용   | `List<E>`         |
+| K    | 키를 표현할 때 흔히 사용                    | `Map<K, V>`       |
+| V    | 값을 표현할 때 흔히 사용                    | `Map<K, V>`       |
+
+---
