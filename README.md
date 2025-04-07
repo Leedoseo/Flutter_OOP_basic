@@ -305,3 +305,119 @@ void main() {
 
 ---
 
+## ✅ 4. 인터페이스
+- 상속은 공유되는 기능을 이어받는 개념, + 하나의 클래스만 가능
+- 인터페이스는 공통으로 필요한 기능을 정의만 해두는 역할!, + 인터페이스는 적용 개수에 제한 없음! 여러 인터페이스를 사용하고싶으면 `,`기호를 사용! 
+
+```dart
+// 인터페이스
+
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// implements 키워드를 사용하면 원하는 클래스를 인터페이스로 사용 가능!
+class GirlGroup implements Idol {
+  final String name;
+  final int membersCount;
+  
+  GirlGroup(
+  this.name,
+  this.membersCount,
+  );
+  
+  void sayName() {
+    print("저는 여자 아이돌 ${this.membersCount}명입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name} 멤버는 ${this.membersCount}명 입니다.");
+  }
+}
+
+// 인터페이스 사용법
+void main() {
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  blackPink.sayName();
+  blackPink.sayMembersCount();
+}
+```
+위 코드를 보면 `GirlGroup`클래스는 `Idol`클래스가 정의한 모든 기능을 다시 정의 했음.
+상속과 인터페이스의 차이점을 보자면
+- 상속 받을 때는 부모 클래스의 모든 기능이 상속되므로 재정의할 필요가 없음
+- 인터페이스는 반드시 모든 기능을 다시 정의해줘야함!!
+반드시 재정의 할 필요가 있는 기능을 정의하는 용도가 인터페이스임 -> 실수로 빼먹는 일을 방지할 수 있음!
+
+---
+
+## ✅ 5. 믹스인
+믹스인은 특정 클래스에 원하는 기능들만 골라서 넣을 수 있는 기능임.
+특정 클래스를 지정해서 속성들을 정의할 수 있으며 지정한 클래스는 상속하는 클래스에서도 사용이 가능함!
+인터페이스처럼 한 개의 클래스에 여러 개의 믹스인을 적용할 수도 있음. `,`기호로 열거하면 됨.
+
+```dart
+// 믹스인
+
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+mixin IdolSingMixin on Idol {  // mixin키워드로 정의된 믹스인 정의, on Idol은 이 믹스인을 Idol을 상속한 클래스에만 쓸 수 있다는 뜻 (제한 조건을 건 것!)
+  void sing() { // sing()은 this.name을 사용 -> 즉, Idol클래스의 속성을 참조함
+    print("${this.name}이(가) 노래를 부릅니다.");
+  }
+}
+
+// 믹스인을 적용할 때는 with 키워드 사용
+class BoyGroup extends Idol with IdolSingMixin { // extends Idol -> 부모 클래스로부터 기본 속성과 메서드 상속, with IdolSingMixin -> sing() 메서드도 추가로 섞어 넣음
+  BoyGroup( 									 // 즉, BoyGroup은 Idol + IdolSingMixin의 기능을 모두 가짐!
+  super.name,									 // sayName, sayMembersCount, sing, sayMale 다 가능!!
+  super.membersCount,
+  );
+  
+  void sayMale() {
+    print("저는 남자 아이돌입니다.");
+  }
+}
+
+void main() {
+  BoyGroup bts = BoyGroup("BTS", 7);
+  
+  bts.sayMale(); // BoyGroup의 고유 기능
+  bts.sing();    // mixin에서 온 기능!
+}
+```
+- `IdolSingMixin`이라는 믹스인은 `BoyGroup`클래스에 `void sing()`을 섞어 넣은 것
+- 그 결과 `BoyGroup`객체는 `sing()` 메서드를 사용할 수 있게 된 것
+
+믹스인을 요약하자면
+- 믹스인은 클래스를 상속하지 않고도 기능을 재사용/주입하는 방법
+- `with`키워드를 통해 클래스에 기능을 `섞어 넣는`느낌으로 동작함.
+
+---
+
