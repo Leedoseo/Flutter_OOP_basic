@@ -579,3 +579,105 @@ void main() {
 | V    | 값을 표현할 때 흔히 사용                    | `Map<K, V>`       |
 
 ---
+
+## ✅ 8. 스태틱
+`static`키워드를 사용하면 클래스 자체에 변수와 메서드 등 모든 속성이 클래스 자체에 귀속됨
+
+```dart
+class Counter {
+  // 1. static키워드를 사용해서 static 변수 선언
+  static int i = 0;
+  
+  // 2. static 키워드를 사용해서 static 변수 선언
+  Counter() {
+    i++;
+    print(i++);
+  }
+}
+
+void main() {
+  Counter count1 = Counter();
+  Counter count2 = Counter();
+  Counter count3 = Counter();
+}
+```
+- 변수 `i`를 `static`으로 지정 -> 스태틱 변수(정적 변수)라고 부름
+- `Counter`클래스에 귀속되기 떄문에, 인스턴스를 새로 만들 떄마다 공용 변수인 `i`가 1씩 증가
+- 생성자에 `this.i`가 아니라 `i`로 명시함 -> `static`변수는 클래스에 직접 귀속되기 때문에, `this`처럼 인스턴스가 가진 값으로 접근할 수 없기 때문!
+- 클래스 이름으로 접근하는게 원칙임 -> `Counter.i`
+- 결론 : `static`키워드는 인스턴스끼리 공유해야 하는 정보에 지정하면 됨
+
+---
+
+## ✅ 9. 캐스케이드 연산자
+- 캐스케이드 연산자는 인스턴스에서 해당 인스턴스의 속성이나 멤버 함수를 연속해서 사용하는 기능
+- `..`기호를 사용
+상속에서 사용한 `Idol`키워드를 가져와서 사용해봄.
+
+```dart
+// 캐스케이드 연산자 사용
+
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+void main() {
+  // cascade operator (..)을 사용하면 선언한 변수의 메서드를 연속해서 실행 가능
+  Idol blackPink = Idol("블랙핑크", 4)
+    ..sayName()
+    ..sayMembersCount();
+}
+```
+이처럼 코드가 간결해짐. 위에 코드 찾아보러가기 귀찮으니 아래에 다시 작성해볼테니 비교해보셈.
+
+```dart
+// 부모 클래스
+class Idol {
+  final String name;
+  final int membersCount;
+  
+  Idol(this.name, this.membersCount);
+  
+  void sayName() {
+    print("저는 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name}멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// 자식 클래스
+class GirlGroup extends Idol {
+  GirlGroup(
+  String name,
+  int membersCount,
+  ) : super(
+  name,
+  membersCount,
+  );
+  
+  void sayFeMale() {
+    print("저는 여자 아이돌입니다.");
+  }
+}
+
+void main() {
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  blackPink.sayName();
+  blackPink.sayMembersCount();
+}
+```
+이제 Dart가 제공하는 객체지향 프로그래밍 기법을 알아봤음. 전체적으로 정리 해보고 복습해보고 비동기로 넘어가보겠음.
