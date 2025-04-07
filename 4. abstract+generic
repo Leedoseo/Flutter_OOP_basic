@@ -1,0 +1,63 @@
+// 추상
+
+// abstract 키워드를 사용해 추상 클래스 지정
+abstract class Idol {
+  final String name;
+  final int membersCount;
+  
+  // 생성자 선언
+  Idol(this.name, this.membersCount);
+  
+  // 추상 메서드 선언
+  void sayName();
+  void sayMembersCount();
+}
+
+// implements 키워드를 사용해 추상 클래스를 구현하는 클래스
+class GirlGroup implements Idol {
+  final String name;
+  final int membersCount;
+  
+  GirlGroup (
+  this.name,
+  this.membersCount,
+  );
+  
+  void sayName() {
+    print("저는 여자 아이돌 ${this.name}입니다.");
+  }
+  
+  void sayMembersCount() {
+    print("${this.name} 멤버는 ${this.membersCount}명입니다.");
+  }
+}
+
+// 추상 클래스 사용 방법
+void main() {
+  GirlGroup blackPink = GirlGroup("블랙핑크", 4);
+  
+  blackPink.sayName();
+  blackPink.sayMembersCount();
+}
+
+// 제네릭
+
+// 인스턴스화할 때 입력받을 타입을 T로 지정함
+class Cache<T> {
+  // data의 타입을 추후 입력될 T 타입으로 지정함
+  final T data;
+  
+  Cache({
+    required this.data,
+  });
+}
+
+void main() {
+  // T의 타입을 List<int>로 입력
+  final cache = Cache<List<int>> (
+  data : [1, 2, 3],
+  );
+  
+  // 제네릭에 입력된 값을 통해 data변수의 타입이 자동으로 유추함.
+  print(cache.data.reduce((value, element) => value + element));
+}
